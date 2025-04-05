@@ -9,3 +9,93 @@ Items: There will be artifacts that Justin must collect, along with other items 
 
 Ending: Once all 10 artifacts are found, Justin will be transported to a new world of paradise. ##
 
+## THIS IS A PROJECT IN THE WORKS ## 
+
+Justin's Quest - Text-based Adventure Game
+Welcome to Justin's Quest, a captivating text-based adventure game where you embark on a thrilling journey to collect ancient artifacts, battle fierce enemies, and uncover the mysteries of a medieval castle. Developed in C++, this game offers a rich narrative and exciting gameplay mechanics.
+
+Overview
+In this game, you play as Justin, who wakes up in a cold, damp dungeon. Your quest? To collect all 10 ancient artifacts scattered across the castle, battling guards and solving puzzles along the way. Your final goal is to conquer the dragons of wisdom, retrieve the artifacts, and escape to a world of great wonder and paradise.
+
+Prerequisites
+Before you begin, you'll need to ensure that your development environment is set up to compile and run C++ programs. Specifically, you'll need a C++ compiler such as g++. Please follow the instructions below to get started.
+
+Installing g++ Compiler
+Windows: Download and install MinGW.
+
+macOS: Install the Xcode command line tools by running xcode-select --install in your terminal.
+
+Linux: Install g++ using your package manager, for example:
+
+bash
+
+sudo apt install g++
+Compilation Instructions
+To compile the game and generate an executable, follow the steps below.
+
+1. Open Your Terminal or Command Prompt
+Ensure you're in the project directory where the .cpp files are located.
+
+2. Run the Compilation Command
+In your terminal, use the following g++ command to compile the source files into an executable. This command will take the main.cpp, player.cpp, room.cpp, and enemy.cpp files and link them into a single executable named justinsQuest.
+
+bash
+
+g++ -o justinsQuest main.cpp player.cpp room.cpp enemy.cpp
+This will produce an executable file called justinsQuest.
+
+Note: You may need to adjust the file names based on your actual file names or paths.
+
+Running the Game
+Once the compilation is complete, you can run the game by executing the following command in your terminal:
+
+On Windows:
+bash
+
+justinsQuest.exe
+On macOS/Linux:
+bash
+
+./justinsQuest
+Gameplay
+Getting Started
+When you first launch the game, you’ll be prompted to enter your character's name. After that, you’ll find yourself in a damp dungeon, where your journey begins.
+
+Main Features
+Exploration: Navigate through various rooms of the castle to find hidden artifacts.
+
+Combat: Battle castle guards and knights to advance.
+
+Inventory: Collect and manage items such as keys and health potions.
+
+Artifacts: Your goal is to find all 10 ancient artifacts scattered throughout the castle.
+
+Game Objective
+Your ultimate goal is to collect all 10 artifacts from the dragons of wisdom. After finding them, you'll be transported to a new world of paradise. The game ends when all artifacts have been collected.
+
+Modifications & Contributions
+If you'd like to modify or extend the game, feel free to fork the repository and contribute! Whether it's adding new features, refining gameplay mechanics, or fixing bugs, your contributions are welcome.
+
+Some possible improvements include:
+
+Adding more rooms and puzzle elements.
+
+Introducing new enemies or combat mechanics.
+
+Expanding the story and world-building.
+
+Clean-up (Optional)
+If you need to remove any object files or executables, you can manually delete them. Alternatively, if you're using a Makefile or VS Code tasks, you can clean your project by running:
+
+bash
+
+make clean
+This will remove any temporary or old files.
+
+License
+This project is open-source and licensed under the MIT License.
+
+Contact
+If you have any questions, feedback, or suggestions, feel free to reach out.
+
+Enjoy your adventure in Justin's Quest!
