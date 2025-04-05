@@ -1,7 +1,7 @@
 #include "player.h"
 #include <iostream>
 
-Player::Player(std::string playerName) : name(playerName), health(100), artifactsCollected(0) {}
+Player::Player(std::string playerName, Room* startRoom) : name(playerName), health(100), artifactsCollected(0), currentRoom(startRoom) {}
 
 void Player::showStats() {
     std::cout << "Player: " << name << "\n";
@@ -15,6 +15,13 @@ void Player::showStats() {
 }
 
 void Player::addItem(std::string item) {
+    // Check if the item is already in the inventory
+    for (const auto& invItem : inventory) {
+        if (invItem == item) {
+            std::cout << "You already have a " << item << " in your inventory.\n";
+            return;
+        }
+    }
     inventory.push_back(item);
 }
 
@@ -32,3 +39,8 @@ void Player::collectArtifact() {
 bool Player::hasAllArtifacts() {
     return artifactsCollected == 10;
 }
+
+void Player::move(Room* newRoom) {
+    currentRoom = newRoom;
+}
+
