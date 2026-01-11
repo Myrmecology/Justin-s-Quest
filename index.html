@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>POLYGLOT HYPEROBJECT — SILVER FORM</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at center, #050505, #000000);
+    overflow: hidden;
+    font-family: monospace;
+}
+
+#overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #cfd8dc;
+    z-index: 10;
+    text-shadow: 0 0 12px #9e9e9e;
+    pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+<div id="overlay">
+<b>POLYGLOT HYPEROBJECT</b><br>
+Silver Wireframe Entity<br>
+Alive & Breathing
+</div>
+
+<script type="module">
+/* ============================================================
+   THREE.JS CORE
+============================================================ */
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x000000, 0.03);
+
+const camera = new THREE.PerspectiveCamera(
+    65,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100
+);
+camera.position.z = 9;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.body.appendChild(renderer.domElement);
+
+/* ============================================================
+   LIGHTING (SUBTLE — LET WIREFRAME SHINE)
+============================================================ */
+scene.add(
+    new THREE.AmbientLight(0xffffff, 0.25)
+);
+
+const keyLight = new THREE.PointLight(0xffffff, 1.5, 50);
+keyLight.position.set(10, 10, 10);
+scene.add(keyLight);
+
+/* ============================================================
+   SILVER WIREFRAME SHADER
+============================================================ */
+const material = new THREE.ShaderMaterial({
+    wireframe: true,
+    uniforms: {
+        time: { value: 0 }
+    },
+    vertexShader: `
+        uniform float time;
+        varying float vPulse;
+
+        void main() {
+            vec3 p = position;
+            float t = time * 0.8;
+
+            float turbulence =
+                sin(p.x * 3.0 + t) *
+                sin(p.y * 3.0 + t * 1.3) *
+                sin(p.z * 3.0 + t * 0.7);
+
+            float breath = sin(t + length(p)) * 0.6;
+
+            p += normal * (turbulence * 0.4 + breath * 0.35);
+
+            vPulse = turbulence + breath;
+
+            gl_Position =
+                projectionMatrix *
+                modelViewMatrix *
+                vec4(p, 1.0);
+        }
+    `,
+    fragmentShader: `
+        varying float vPulse;
+
+        void main() {
+            float silver =
+                0.6 +
+                vPulse * 0.25;
+
+            vec3 color = vec3(silver);
+
+            gl_FragColor = vec4(color, 1.0);
+        }
+    `
+});
+
+/* ============================================================
+   GEOMETRY (HIGH DETAIL, NEVER REBUILT)
+============================================================ */
+const geometry = new THREE.IcosahedronGeometry(3, 6);
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+/* ============================================================
+   PYTHON (PYODIDE) — NON-BLOCKING INFLUENCE
+============================================================ */
+import "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js";
+
+let pythonEnergy = 1.0;
+
+loadPyodide().then(async (pyodide) => {
+    await pyodide.runPythonAsync(`
+import math
+def energy(t):
+    return 1.0 + math.sin(t * 0.7) * 0.6
+`);
+    setInterval(() => {
+        pythonEnergy =
+            pyodide.globals.get("energy")(performance.now() * 0.001);
+    }, 100);
+    console.log("🐍 Python energy online");
+});
+
+/* ============================================================
+   RUST (CONCEPTUAL MIRROR)
+============================================================ */
+function rust_mutate(v, t) {
+    return Math.cos(v * Math.sin(t));
+}
+
+/* ============================================================
+   ANIMATION LOOP — MUCH MORE ALIVE
+============================================================ */
+let t = 0;
+
+function animate() {
+    requestAnimationFrame(animate);
+    t += 0.01;
+
+    material.uniforms.time.value = t;
+
+    // Core rotation
+    mesh.rotation.x += 0.004 * pythonEnergy;
+    mesh.rotation.y += 0.006 * pythonEnergy;
+    mesh.rotation.z += rust_mutate(0.5, t) * 0.005;
+
+    // Organic wobble
+    mesh.rotation.x += Math.sin(t * 1.3) * 0.002;
+    mesh.rotation.y += Math.cos(t * 1.7) * 0.002;
+
+    // Breathing scale
+    const s =
+        1.0 +
+        Math.sin(t * 0.9) * 0.18 +
+        Math.sin(t * 2.1) * 0.06;
+
+    mesh.scale.set(s, s, s);
+
+    // Subtle spatial drift (alive, not floating away)
+    mesh.position.x = Math.sin(t * 0.3) * 0.4;
+    mesh.position.y = Math.cos(t * 0.4) * 0.3;
+    mesh.position.z = Math.sin(t * 0.2) * 0.2;
+
+    renderer.render(scene, camera);
+}
+
+animate();
+
+/* ============================================================
+   RESIZE
+============================================================ */
+window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>
+
